@@ -3,18 +3,27 @@ import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 
-export const EditContact = () => {
-	const { actions } = useContext(Context);
-	const [phone, setPhone] = useState("");
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const [address, setAddress] = useState("");
-	console.log("try", store.contacts);
+export const EditContact = props => {
+	let id = props.match.params.id;
+	let pos = 0;
+	const { store, actions } = useContext(Context);
+
+	for (let i in store.agenda) {
+		if (store.agenda[i].id === id) {
+			pos = i;
+		}
+	}
+
+	let agenda = store.agenda[pos];
+	const [phone, setPhone] = useState(contact ? contact.phone : "");
+	const [name, setName] = useState(contact ? contact.full_name : "");
+	const [email, setEmail] = useState(contact ? contact.email : "");
+	const [address, setAddress] = useState(contact ? contact.address : "");
 
 	return (
 		<div className="container">
 			<div>
-				<h1 className="text-center mt-5">Edit contact!</h1>
+				<h1 className="text-center mt-5">Edit contact</h1>
 				<form>
 					<div className="form-group">
 						<label>Full Name</label>
@@ -22,6 +31,7 @@ export const EditContact = () => {
 							type="text"
 							className="form-control"
 							placeholder="Full Name"
+							defaultValue={store.contacts[props.match.params.index].full_name}
 							onChange={e => setName(e.target.value)}
 						/>
 					</div>
