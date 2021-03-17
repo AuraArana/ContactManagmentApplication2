@@ -5,16 +5,8 @@ import PropTypes from "prop-types";
 
 export const EditContact = props => {
 	let id = props.match.params.id;
-	let pos = 0;
 	const { store, actions } = useContext(Context);
-
-	for (let i in store.agenda) {
-		if (store.agenda[i].id === id) {
-			pos = i;
-		}
-	}
-
-	let agenda = store.agenda[pos];
+	let contact = store.contacts[props.match.params.index];
 	const [phone, setPhone] = useState(contact ? contact.phone : "");
 	const [name, setName] = useState(contact ? contact.full_name : "");
 	const [email, setEmail] = useState(contact ? contact.email : "");
@@ -41,6 +33,7 @@ export const EditContact = props => {
 							type="email"
 							className="form-control"
 							placeholder="Enter email"
+							defaultValue={store.contacts[props.match.params.index].email}
 							onChange={e => setEmail(e.target.value)}
 						/>
 					</div>
@@ -50,6 +43,7 @@ export const EditContact = props => {
 							type="phone"
 							className="form-control"
 							placeholder="Enter phone"
+							defaultValue={store.contacts[props.match.params.index].phone}
 							onChange={e => setPhone(e.target.value)}
 						/>
 					</div>
@@ -59,6 +53,7 @@ export const EditContact = props => {
 							type="text"
 							className="form-control"
 							placeholder="Enter address"
+							defaultValue={store.contacts[props.match.params.index].address}
 							onChange={e => setAddress(e.target.value)}
 						/>
 					</div>
@@ -67,7 +62,7 @@ export const EditContact = props => {
 							type="button"
 							className="btn btn-primary form-control"
 							onChange={() => {
-								actions.addContact(name, phone, email, address);
+								actions.addContact(id, name, phone, email, address);
 							}}>
 							save
 						</button>
